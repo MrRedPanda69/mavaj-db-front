@@ -6,9 +6,12 @@ import ConfirmAccount from './pages/ConfirmAccount';
 import ForgottenPassword from './pages/ForgottenPassword';
 import NewPassword from './pages/NewPassword';
 import Login from './pages/Login';
+import Projects from './pages/Projects';
 import Register from './pages/Register';
 
 import { AuthProvider } from './context/AuthProvider';
+
+import ProtectedRoute from './layouts/ProtectedRoute';
 
 function App() {
     return (
