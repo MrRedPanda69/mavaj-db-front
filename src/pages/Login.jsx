@@ -1,13 +1,58 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
+import useAuth from '../../hooks/useAuth';
+
+import Alert from '../components/Alert';
+import clientAxios from '../config/clientAxios';
 
 const Login = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [alert, setAlert] = useState({});
+
+    const { setAuth } = useAuth();
+
+    const handleSubmit = async e => {
+        e.preventDefault();
+
+        if([email, password].includes('')) {
+            setAlert({
+                msg: 'All field are required',
+                error: true
+            })
+            return;
+        }
+
+        try {
+            const { data } = await clientAxios.post('/users/login', {email, password});
+            setAlert({});
+            localStorage.setItem('token', data.token);
+            setAuth(data);
+            
+        } catch (error) {
+            setAlert({
+                msg: error.response.data.msg,
+                error: true
+            })
+        }
+    }
+
+
+    const { msg } = alert;
+
     return (
         <>
             <h1 className="text-emerald-700 capitalize font-black text-6xl">
                 Login and start your <span className='text-slate-50'>shipping</span>
             </h1>
 
-            <form className='my-10 bg-white shadow-white rounded-lg px-8 py-3'>
+            {msg && <Alert alert={alert} />}
+
+            <form 
+                className='my-10 bg-white shadow-white rounded-lg px-8 py-3'
+                onSubmit={handleSubmit}
+            >
                 <div>
                     <label 
                         className='uppercase text-zinc-700 block text-xl font-bold'
@@ -19,6 +64,8 @@ const Login = () => {
                         placeholder='Registration email' 
                         className='text-zinc-700 w-full  mt-3 p-3 border rounded-xl bg-zinc-200'
                         autoComplete='off'
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
                     />
                 </div>
 
@@ -32,6 +79,8 @@ const Login = () => {
                         type='password' 
                         placeholder='Enter your password' 
                         className='text-zinc-700 w-full  mt-3 p-3 border rounded-xl bg-zinc-200'
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
                     />
                 </div>
 

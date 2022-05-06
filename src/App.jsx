@@ -8,18 +8,28 @@ import NewPassword from './pages/NewPassword';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
+import { AuthProvider } from './context/AuthProvider';
+
 function App() {
     return (
         <BrowserRouter>
-            <Routes>
-                <Route path='/' element={<AuthLayout />}>
-                    <Route index element={<Login />} />
-                    <Route path='register' element={<Register />} />
-                    <Route path='forgotten-password' element={<ForgottenPassword />} />
-                    <Route path='forgotten-password/:token' element={<NewPassword />} />
-                    <Route path='confirm/:id' element={<ConfirmAccount />} />
-                </Route>
-            </Routes>
+            <AuthProvider>
+                <Routes>
+                    <Route path='/' element={<AuthLayout />}>
+                        <Route index element={<Login />} />
+                        <Route path='register' element={<Register />} />
+                        <Route path='forgotten-password' element={<ForgottenPassword />} />
+                        <Route path='forgotten-password/:token' element={<NewPassword />} />
+                        <Route path='confirm/:id' element={<ConfirmAccount />} />
+                    </Route>
+
+                    <Route path='/projects' element={<ProtectedRoute />}>
+                        <Route index element={<Projects />}>
+
+                        </Route>
+                    </Route>
+                </Routes>
+            </AuthProvider>
         </BrowserRouter>
     )
 }
