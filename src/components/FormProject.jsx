@@ -11,7 +11,7 @@ const FormProject = () => {
 
     const { showAlert, alert, submitProject } = useProjects();
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
 
         if([projectName, projectDescription, deliveryDate, projectClient].includes('')) {
@@ -23,7 +23,11 @@ const FormProject = () => {
         }
 
         // Pass data to provider
-        submitProject({projectName, projectDescription, deliveryDate, projectClient});
+        await submitProject({projectName, projectDescription, deliveryDate, projectClient});
+        setProjectName('');
+        setProjectDescription('');
+        setDeliveryDate('');
+        setProjectClient('');
     }
 
     const { msg } = alert;
@@ -44,6 +48,7 @@ const FormProject = () => {
                     type='text' 
                     className='border w-full p-2 mt-2 placeholder-zinc-500 rounded-md bg-zinc-100'
                     placeholder='Name for this Project'
+                    autoComplete='off'
                     value={projectName}
                     onChange={e => setProjectName(e.target.value)}
                 />
@@ -87,6 +92,7 @@ const FormProject = () => {
                     type='text' 
                     className='border w-full p-2 mt-2 placeholder-zinc-500 rounded-md bg-zinc-100'
                     placeholder='Client for this Project'
+                    autoComplete='off'
                     value={projectClient}
                     onChange={e => setProjectClient(e.target.value)}
                 />
