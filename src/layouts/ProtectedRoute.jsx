@@ -3,11 +3,14 @@ import { Outlet, Navigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 
 const ProtectedRoute = () => {
-    const { auth } = useAuth;
-    console.log(auth);
+    const { auth, loading } = useAuth();
+    
+    if(loading) return 'Loading'
 
     return (
-        <div>ProtectedRoute</div>
+        <>
+            {auth._id ? <Outlet /> : <Navigate to='/' />}
+        </>
     )
 }
 

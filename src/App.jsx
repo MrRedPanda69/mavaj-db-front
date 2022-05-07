@@ -27,9 +27,7 @@ function App() {
                     </Route>
 
                     <Route path='/projects' element={<ProtectedRoute />}>
-                        <Route index element={<Projects />}>
-
-                        </Route>
+                        <Route index element={<Projects />} />
                     </Route>
                 </Routes>
             </AuthProvider>
