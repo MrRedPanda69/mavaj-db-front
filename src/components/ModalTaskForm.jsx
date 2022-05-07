@@ -61,10 +61,22 @@ const ModalTaskForm = () => {
 
                             <div className="sm:flex sm:items-start">
                                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                                    <Dialog.Title as="h3" className="text-lg leading-6 font-bold text-zinc-900">
-                                        <h1 className="text-4xl">Title</h1>
+                                    <Dialog.Title as="h3" className="text-4xl capitalize leading-6 font-bold text-zinc-900">
+                                        Create new task
                                     </Dialog.Title>
-                                    <p className='text-zinc-700'>content</p>
+                                    <form className='my-10'>
+                                        <div className="mb-5">
+                                            <label
+                                                className='text-zinc-700'
+                                            >
+                                                Task Name
+                                            </label>
+                                            <input 
+                                                type="text" 
+                                            />
+                                        </div>
+
+                                    </form>
                                 </div>
                             </div>
                         </div>
