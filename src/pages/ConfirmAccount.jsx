@@ -21,13 +21,14 @@ const ConfirmAccount = () => {
                     msg: data.msg,
                     error: false
                 });
+
                 setAccountConfirmed(true);
 
             } catch (error) {
                 setAlert({
                     msg: error.response.data.msg,
                     error: true
-                })
+                });
             }
         } 
         confirmAccount();

@@ -24,6 +24,10 @@ const NewPassword = () => {
                     msg: error.response.data.msg,
                     error: true
                 });
+
+                setTimeout(() => {
+                    setAlert({});
+                }, 5000);
             }
         }
         validateToken();
@@ -36,8 +40,11 @@ const NewPassword = () => {
             setAlert({
                 msg: 'Password needs to be at least 6 characters long',
                 error: true
-
             });
+
+            setTimeout(() => {
+                setAlert({});
+            }, 5000);
             return;
         }
 
@@ -49,6 +56,11 @@ const NewPassword = () => {
                 msg: data.msg,
                 error: false
             });
+
+            setTimeout(() => {
+                setAlert({});
+            }, 5000);
+
             setValidToken(false);
             setPasswordModified(true);
             
@@ -57,6 +69,10 @@ const NewPassword = () => {
                 msg: error.response.data.msg,
                 error: true
             });
+
+            setTimeout(() => {
+                setAlert({});
+            }, 5000);
         }
     }
     

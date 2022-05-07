@@ -11,7 +11,7 @@ const Sidebar = () => {
 
             <Link
                 to='create-project'
-                className='bg-gradient-to-br from-emerald-800 to-emerald-900 w-full p-3 uppercase font-bold block mt-5 rounded-md text-center'
+                className='bg-gradient-to-br bg-emerald-700 w-full p-3 uppercase font-bold block mt-5 rounded-md text-center hover:bg-emerald-900 transition-colors'
             >New Project</Link>
         </aside>
     )

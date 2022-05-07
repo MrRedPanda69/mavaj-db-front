@@ -19,6 +19,10 @@ const Register = () => {
                 msg: 'All fields are required',
                 error: true
             });
+
+            setTimeout(() => {
+                setAlert({});
+            }, 5000);
             return;
         }
 
@@ -27,6 +31,10 @@ const Register = () => {
                 msg: 'Your passwords do not match',
                 error: true
             });
+
+            setTimeout(() => {
+                setAlert({});
+            }, 5000);
             return;
         }
 
@@ -35,6 +43,10 @@ const Register = () => {
                 msg: 'Your password is too weak, use at least 6 characters',
                 error: true
             });
+
+            setTimeout(() => {
+                setAlert({});
+            }, 5000);
             return;
         }
 
@@ -48,6 +60,10 @@ const Register = () => {
                 error: false
             });
 
+            setTimeout(() => {
+                setAlert({});
+            }, 5000);
+
             setUserName('');
             setEmail('');
             setPassword('');
@@ -58,6 +74,10 @@ const Register = () => {
                 msg: error.response.data.msg,
                 error: true
             });
+
+            setTimeout(() => {
+                setAlert({});
+            }, 5000);
         }
     }
 

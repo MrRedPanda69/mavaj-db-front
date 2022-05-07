@@ -18,9 +18,13 @@ const Login = () => {
 
         if([email, password].includes('')) {
             setAlert({
-                msg: 'All field are required',
+                msg: 'All fields are required',
                 error: true
-            })
+            });
+
+            setTimeout(() => {
+                setAlert({});
+            }, 5000);
             return;
         }
 
@@ -84,10 +88,11 @@ const Login = () => {
                     />
                 </div>
 
-                <button
+                <input
                     type='submit'
+                    value='Login'
                     className='bg-gradient-to-br from-emerald-600 to-emerald-700 w-full rounded-xl mt-5 mb-2 py-3 uppercase font-bold hover:cursor-pointer hover:bg-emerald-900 transition-colors'
-                >Login</button>
+                />
 
                 <nav className="lg:flex lg:justify-between">
                     <Link

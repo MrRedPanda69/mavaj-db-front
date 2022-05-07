@@ -17,6 +17,10 @@ const ForgottenPassword = () => {
                 msg: 'You must provide a proper email',
                 error: true
             });
+
+            setTimeout(() => {
+                setAlert({});
+            }, 5000);
             return;
         }
 
@@ -26,13 +30,21 @@ const ForgottenPassword = () => {
             setAlert({
                 msg: data.msg,
                 error: false
-            })
+            });
+
+            setTimeout(() => {
+                setAlert({});
+            }, 5000);
             
         } catch (error) {
             setAlert({
                 msg: error.response.data.msg,
                 error: true
-            })
+            });
+
+            setTimeout(() => {
+                setAlert({});
+            }, 5000);
         }
 
     }

@@ -41,13 +41,17 @@ const AuthProvider = ({children}) => {
         userAuth();
     }, []);
     
+    const logOutAuth = () => {
+        setAuth({});
+    }
 
     return (
         <AuthContext.Provider
             value={{
                 auth,
                 loading,
-                setAuth
+                setAuth,
+                logOutAuth
             }}
         >
             {children}
