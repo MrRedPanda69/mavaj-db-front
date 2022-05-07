@@ -1,15 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 import useProjects from '../hooks/useProjects';
 import Alert from './Alert';
 
 const FormProject = () => {
+    const [id, setId] = useState(null);
     const [projectName, setProjectName] = useState('');
     const [projectDescription, setProjectDescription] = useState('');
     const [deliveryDate, setDeliveryDate] = useState('');
     const [projectClient, setProjectClient] = useState('');
 
-    const { showAlert, alert, submitProject } = useProjects();
+    const params = useParams();
+    const { showAlert, alert, submitProject, project } = useProjects();
+
+    useEffect(() => {
+        if(params.id) {
+            setId(project._id)
+            setProjectName(project.projectName);
+            setProjectDescription(project.projectDescription);
+            setDeliveryDate(project.deliveryDate?.split('T')[0]);
+            setProjectClient(project.projectClient);
+        }
+    }, [params]);
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -23,7 +36,8 @@ const FormProject = () => {
         }
 
         // Pass data to provider
-        await submitProject({projectName, projectDescription, deliveryDate, projectClient});
+        await submitProject({projectName, projectDescription, deliveryDate, projectClient, id});
+        setId(null);
         setProjectName('');
         setProjectDescription('');
         setDeliveryDate('');
@@ -100,7 +114,7 @@ const FormProject = () => {
 
             <input 
                 type='submit' 
-                value='Create Project'
+                value={id ? 'Update Project' : 'Create Project'}
                 className='bg-gradient-to-br bg-emerald-700 w-full p-3 rounded-md font-bold hover:bg-emerald-900 transition-colors cursor-pointer'
             />
         </form>

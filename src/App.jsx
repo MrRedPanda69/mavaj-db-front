@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AuthLayout from './layouts/AuthLayout';
 
 import ConfirmAccount from './pages/ConfirmAccount';
+import EditProject from './pages/EditProject';
 import ForgottenPassword from './pages/ForgottenPassword';
 import NewPassword from './pages/NewPassword';
 import NewProject from './pages/NewProject';
@@ -34,6 +35,7 @@ function App() {
                             <Route index element={<Projects />} />
                             <Route path='create-project' element={<NewProject />} />
                             <Route path=':id' element={<Project />} />
+                            <Route path='edit/:id' element={<EditProject />} />
                         </Route>
                     </Routes>
                 </ProjectsProvider>

@@ -7,7 +7,9 @@ const ProjectsContext = createContext();
 
 const ProjectsProvider = ({children}) => {
     const [projects, setProjects] = useState([]);
-    const [alert, setAlert] = useState([]);
+    const [alert, setAlert] = useState({});
+    const [project, setProject] = useState({});
+    const [loading, setLoading] = useState(false)
 
     const navigate = useNavigate();
 
@@ -44,6 +46,46 @@ const ProjectsProvider = ({children}) => {
     }
 
     const submitProject = async project => {
+        (project.id) ? await editProject(project) : await newProject(project);
+    }
+
+    const editProject = async project => {
+        try {
+            const token = localStorage.getItem('token');
+            if(!token) return;
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+            const { data } = await clientAxios.put(`/projects/${project.id}`, project, config);
+            
+            // Sync state 
+            const updatedProjects = projects.map(projectState => projectState._id === data._id ? data : projectState);
+            setProjects(updatedProjects);
+            // Show Alert  
+            setAlert({
+                msg: 'Project Successfully updated',
+                error: false
+            });
+
+            setTimeout(() => {
+                setAlert({});
+                navigate('/projects')
+            }, 3000);
+
+            // Redirect
+
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const newProject = async project => {
         try {
             const token = localStorage.getItem('token');
             if(!token) return;
@@ -72,13 +114,40 @@ const ProjectsProvider = ({children}) => {
         }
     }
 
+    const getProject = async id => {
+        setLoading(true);
+        try {
+            const token = localStorage.getItem('token');
+            if(!token) return;
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+            const { data } = await clientAxios(`/projects/${id}`, config);
+            setProject(data);
+            
+        } catch (error) {
+            console.log(error);
+
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return (
         <ProjectsContext.Provider
             value={{
                 projects,
                 showAlert,
                 alert,
-                submitProject
+                submitProject,
+                getProject,
+                project,
+                loading
             }}
         >
             {children}
