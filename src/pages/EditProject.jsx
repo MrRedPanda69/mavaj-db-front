@@ -8,11 +8,17 @@ import useProjects from '../hooks/useProjects';
 
 const EditProject = () => {
     const params = useParams();
-    const { getProject, project, loading } = useProjects();
+    const { getProject, project, loading, deleteProject } = useProjects();
 
     useEffect(() => {
         getProject(params.id);
     }, []);
+
+    const handleClick = () => {
+        if(confirm('Do you wish to delete this project?')) {
+            deleteProject(params.id);
+        } 
+    }
     
     const { projectName } = project;
     if(loading) return(
@@ -53,6 +59,7 @@ const EditProject = () => {
                     </svg>
                     <button
                         className='text-xl font-bold uppercase'
+                        onClick={handleClick}
                     >Delete</button>
                 </div>
             </div>
