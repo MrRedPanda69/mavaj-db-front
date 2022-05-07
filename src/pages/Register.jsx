@@ -139,7 +139,7 @@ const Register = () => {
 
                 <button
                     type='submit'
-                    className='bg-emerald-700 w-full rounded-xl mt-5 mb-2 py-3 uppercase font-bold hover:cursor-pointer hover:bg-emerald-900 transition-colors'
+                    className='bg-gradient-to-br from-emerald-600 to-emerald-700 w-full rounded-xl mt-5 mb-2 py-3 uppercase font-bold hover:cursor-pointer hover:bg-emerald-900 transition-colors'
                 >Sign up</button>
 
                 <nav className="lg:flex lg:justify-between">
