@@ -1,15 +1,38 @@
 import { Fragment, useState, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { useParams } from 'react-router-dom';
+
+import Alert from './Alert';
 
 import useProjects from '../hooks/useProjects';
 
+    const PRIORITY = ['Low', 'Medium', 'High'];
 
 const ModalTaskForm = () => {
-    const { modalTaskForm, handleModalTask } = useProjects();
+    const { modalTaskForm, handleModalTask, showAlert, alert, submitTask } = useProjects();
 
     const [taskName, setTaskName] = useState('');
     const [taskDescription, setTaskDescription] = useState('');
     const [taskPriority, setTaskPriority] = useState('');
+    const [deliveryDate, setDeliveryDate] = useState('');
+
+    const params = useParams();
+
+    const handleSubmit = e => {
+        e.preventDefault();
+
+        if([taskName, taskDescription, taskPriority, deliveryDate].includes('')) {
+            showAlert({
+                msg: 'All fields are required',
+                error: true
+            });
+
+            return;
+        }
+        submitTask({taskName, taskDescription, taskPriority, deliveryDate, belongsToProject: params.id});
+    }
+
+    const { msg } = alert;
 
     return (
         <Transition.Root show={modalTaskForm} as={Fragment}>
@@ -61,21 +84,92 @@ const ModalTaskForm = () => {
 
                             <div className="sm:flex sm:items-start">
                                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                    {msg && <Alert alert={alert} />}
                                     <Dialog.Title as="h3" className="text-4xl capitalize leading-6 font-bold text-zinc-900">
                                         Create new task
                                     </Dialog.Title>
-                                    <form className='my-10'>
+                                    <form 
+                                        className='my-10'
+                                        onSubmit={handleSubmit}
+                                    >
                                         <div className="mb-5">
                                             <label
-                                                className='text-zinc-700'
+                                                className='text-zinc-700 uppercase font-bold text-sm'
+                                                htmlFor='taskName'
                                             >
                                                 Task Name
                                             </label>
                                             <input 
                                                 type="text" 
+                                                id='taskName'
+                                                className='bg-zinc-300 border-2 w-full p-2 mt-2 placeholder-zinc-500 rounded-md text-zinc-700'
+                                                placeholder='Enter task Name Here'
+                                                autoComplete='off'
+                                                value={taskName}
+                                                onChange={e => setTaskName(e.target.value)}
                                             />
                                         </div>
 
+                                        <div className="mb-5">
+                                            <label
+                                                className='text-zinc-700 uppercase font-bold text-sm'
+                                                htmlFor='taskDescription'
+                                            >
+                                                Task Description
+                                            </label>
+                                            <textarea 
+                                                id='taskDescription'
+                                                className='bg-zinc-300  border-2 w-full p-2 mt-2 placeholder-zinc-500 rounded-md text-zinc-700'
+                                                placeholder='Short description for this task'
+                                                autoComplete='off'
+                                                value={taskDescription}
+                                                onChange={e => setTaskDescription(e.target.value)}
+                                            />
+                                        </div>
+
+                                        <div className="mb-5">
+                                            <label
+                                                className='text-zinc-700 uppercase font-bold text-sm'
+                                                htmlFor='deliveryDate'
+                                            >
+                                                Delivery Date
+                                            </label>
+                                            <input 
+                                                type="date" 
+                                                id='deliveryDate'
+                                                className='bg-zinc-300  border-2 w-full p-2 mt-2 placeholder-zinc-500 rounded-md text-zinc-700'
+                                                autoComplete='off'
+                                                value={deliveryDate}
+                                                onChange={e => setDeliveryDate(e.target.value)}
+                                            />
+                                        </div>
+
+                                        <div className="mb-5">
+                                            <label
+                                                className='text-zinc-700 uppercase font-bold text-sm'
+                                                htmlFor='taskDescription'
+                                            >
+                                                Task Priority
+                                            </label>
+                                            <select 
+                                                name="" 
+                                                id='taskPriority'
+                                                className='bg-zinc-300  border-2 w-full p-2 mt-2 placeholder-zinc-500 rounded-md text-zinc-700'
+                                                value={taskPriority}
+                                                onChange={e => setTaskPriority(e.target.value)}
+                                            >
+                                                <option>--Select--</option>
+                                                {PRIORITY.map(opt => (
+                                                    <option key={opt}>{opt}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+
+                                        <input 
+                                            type="submit" 
+                                            value="Create task" 
+                                            className='bg-emerald-700 hover:bg-emerald-700 transition-colors p-3 w-full rounded-lg uppercase font-bold cursor-pointer text-sm'
+                                        />
                                     </form>
                                 </div>
                             </div>
