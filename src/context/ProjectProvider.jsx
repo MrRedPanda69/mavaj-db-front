@@ -11,6 +11,7 @@ const ProjectsProvider = ({children}) => {
     const [project, setProject] = useState({});
     const [loading, setLoading] = useState(false);
     const [modalTaskForm, setModalTaskForm] = useState(false);
+    const [task, setTask] = useState({});
 
     const navigate = useNavigate();
 
@@ -174,9 +175,19 @@ const ProjectsProvider = ({children}) => {
 
     const handleModalTask = () => {
         setModalTaskForm(!modalTaskForm);
+        setTask({});
     }
 
     const submitTask = async task => {
+        if(task?.id) {
+            await updateTask(task);
+        } else {
+            await createTask(task);
+        }
+
+    }
+    
+    const createTask = async task => {
         try {
             const token = localStorage.getItem('token');
             if(!token) return;
@@ -190,9 +201,47 @@ const ProjectsProvider = ({children}) => {
             const { data } = await clientAxios.post('/tasks', task, config);
             console.log(data);
 
+            // Add task to state 
+            const updatedProject = {...project};
+            updatedProject.projectTasks = [...project.projectTasks, data];
+
+            setProject(updatedProject);
+            setAlert({});
+            setModalTaskForm(false);
+
         } catch (error) {
             console.log(error);
         }
+    }
+
+    const updateTask = async task => {
+        try {
+            const token = localStorage.getItem('token');
+            if(!token) return;
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            const { data } = await clientAxios.put(`/tasks/${task.id}`, task, config);
+
+            const updatedProject = {...project};
+            updatedProject.projectTasks = updatedProject.projectTasks.map(taskState => taskState._id === data._id ? data : taskState);
+            setProject(updatedProject);
+
+            setAlert({});
+            setModalTaskForm(false);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleEditTaskModal = task => {
+        setTask(task);
+        setModalTaskForm(true);
     }
 
     return (
@@ -208,7 +257,9 @@ const ProjectsProvider = ({children}) => {
                 deleteProject,
                 modalTaskForm,
                 handleModalTask,
-                submitTask
+                submitTask,
+                handleEditTaskModal,
+                task
             }}
         >
             {children}
