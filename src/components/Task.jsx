@@ -2,7 +2,7 @@ import { formatDate } from '../helpers/FormatDate';
 import useProjects from '../hooks/useProjects';
 
 const Task = ({projectTasks}) => {
-    const { handleEditTaskModal } = useProjects();
+    const { handleEditTaskModal, handleDeleteTaskModal } = useProjects();
 
     const { taskName, taskPriority, taskDescription, deliveryDate, _id, taskStatus} = projectTasks;
 
@@ -63,6 +63,7 @@ const Task = ({projectTasks}) => {
                 
                 <button
                     className='bg-red-500 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg flex gap-1 items-center'
+                    onClick={() => handleDeleteTaskModal(projectTasks)}
                 >
                     <svg 
                         xmlns="http://www.w3.org/2000/svg" 

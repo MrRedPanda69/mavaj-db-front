@@ -5,6 +5,7 @@ import AuthLayout from './layouts/AuthLayout';
 import ConfirmAccount from './pages/ConfirmAccount';
 import EditProject from './pages/EditProject';
 import ForgottenPassword from './pages/ForgottenPassword';
+import NewCollaborator from './pages/NewCollaborator';
 import NewPassword from './pages/NewPassword';
 import NewProject from './pages/NewProject';
 import Login from './pages/Login';
@@ -36,6 +37,7 @@ function App() {
                             <Route path='create-project' element={<NewProject />} />
                             <Route path=':id' element={<Project />} />
                             <Route path='edit/:id' element={<EditProject />} />
+                            <Route path='new-collaborator/:id' element={<NewCollaborator />} />
                         </Route>
                     </Routes>
                 </ProjectsProvider>

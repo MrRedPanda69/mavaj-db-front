@@ -12,6 +12,7 @@ const ProjectsProvider = ({children}) => {
     const [loading, setLoading] = useState(false);
     const [modalTaskForm, setModalTaskForm] = useState(false);
     const [task, setTask] = useState({});
+    const [modalDeleteTask, setModalDeleteTask] = useState(false);
 
     const navigate = useNavigate();
 
@@ -244,6 +245,46 @@ const ProjectsProvider = ({children}) => {
         setModalTaskForm(true);
     }
 
+    const handleDeleteTaskModal = task => {
+        setTask(task);
+        setModalDeleteTask(!modalDeleteTask);
+    }
+
+    const deleteTask = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if(!token) return;
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            const { data } = await clientAxios.delete(`/tasks/${task._id}`, config);
+            setAlert({
+                msg: data.msg,
+                error: false
+            });
+
+            const updatedProject = {...project};
+            updatedProject.projectTasks = updatedProject.projectTasks.filter(taskState => taskState._id !== task._id);
+            setProject(updatedProject);
+            setModalDeleteTask(false);
+            setTask({});
+            setTimeout(() => {
+                setAlert({});
+            }, 3000);
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const submitCollaborator = async collaboratorEmail => {
+        console.log(collaboratorEmail);
+    }
+
     return (
         <ProjectsContext.Provider
             value={{
@@ -259,7 +300,11 @@ const ProjectsProvider = ({children}) => {
                 handleModalTask,
                 submitTask,
                 handleEditTaskModal,
-                task
+                task,
+                modalDeleteTask,
+                handleDeleteTaskModal,
+                deleteTask,
+                submitCollaborator
             }}
         >
             {children}

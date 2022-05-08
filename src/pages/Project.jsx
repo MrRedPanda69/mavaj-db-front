@@ -3,19 +3,23 @@ import { Link, useParams } from 'react-router-dom';
 
 import useProjects from '../hooks/useProjects';
 
+import ModalDeleteTask from '../components/ModalDeleteTask';
 import ModalTaskForm from '../components/ModalTaskForm';
 
+import Alert from '../components/Alert';
 import Task from '../components/Task';
 
 const Project = () => {
     const params = useParams();
-    const { getProject, project, loading, handleModalTask } = useProjects();
+    const { getProject, project, loading, handleModalTask, alert } = useProjects();
 
     useEffect(() => {
         getProject(params.id);
     }, []);
     
     const { projectName } = project;
+
+    const { msg } = alert;
 
     return (
         loading 
@@ -55,7 +59,7 @@ const Project = () => {
                         <Link
                             to={`/projects/edit/${params.id}`}
                             className='text-xl font-bold uppercase'
-                        >Edit</Link>
+                        >Edit Project</Link>
                     </div>
                 </div>
 
@@ -71,12 +75,19 @@ const Project = () => {
                 </button>
 
                 <p className="font-bold text-2xl mt-10 text-zinc-700 flex gap-2 items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-zinc-200" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
                         <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
                     </svg>
                     Project's Tasks
                 </p>
+
+                <div className="flex justify-center">
+                    <div className='w-full md:w-1/3 lg:w-1/4'>
+                        {msg && <Alert alert={alert} />}
+                    </div>
+                </div>
+
                 <div className="bg-zinc-200 mt-10 rounded-lg text-zinc-700">
                     { project.projectTasks?.length 
                         ? project.projectTasks?.map(projectTasks => 
@@ -89,7 +100,26 @@ const Project = () => {
                     }
                 </div>
 
+                <div className='flex items-center justify-between mt-10'>
+                    <p className="font-bold text-2xl flex gap-2 items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+                    </svg>
+                        Collaborators
+                    </p>
+                    <Link
+                        to={`/projects/new-collaborator/${project._id}`}
+                        className='flex justify-center gap-2 items-center uppercase font-bold text-xl text-zinc-200 hover:text-zinc-700 transition-colors'
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
+                        </svg>
+                        Add Collaborator 
+                    </Link>
+                </div>
+
                 <ModalTaskForm />
+                <ModalDeleteTask />
             </>
         )
     );
