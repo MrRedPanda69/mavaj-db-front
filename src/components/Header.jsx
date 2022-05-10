@@ -5,7 +5,7 @@ const Header = () => {
         <header className='px-4 py-5 bg-gradient-to-br from-emerald-600 to-emerald-700 border-b-zinc-700'>
             <div className="md:flex md:justify-between">
                 <h2 className="text-4xl font-black">
-                    AduanaProj
+                    MAVAJ
                 </h2>
 
                 <input 
