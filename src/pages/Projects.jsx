@@ -18,7 +18,7 @@ const Projects = () => {
                             project={project}
                         />
                     ))     
-                    : <p className='text-center text-zinc-600 uppercase'>No projects</p>
+                    : <p className='bg-zinc-200 mt-10 rounded-lg text-zinc-700 text-center my-5 p-5 text-2xl font-bold'>No projects here, click on <span className='text-emerald-600'>New Project</span> to create a new one!</p>
                 }
             </div>
         </>

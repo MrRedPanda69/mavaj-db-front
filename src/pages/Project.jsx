@@ -96,7 +96,7 @@ const Project = () => {
                                 projectTasks={projectTasks}
                             /> 
                         )                        
-                        : <p className='text-center my-5 p-5 text-2xl font-bold'>There are no tasks in this project</p>
+                        : <p className='text-center my-5 p-5 text-2xl font-bold'>There are no tasks in this project, click on <span className='text-emerald-600'>New Task</span> to create a new one!</p>
                     }
                 </div>
 

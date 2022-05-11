@@ -13,6 +13,7 @@ const ProjectsProvider = ({children}) => {
     const [modalTaskForm, setModalTaskForm] = useState(false);
     const [task, setTask] = useState({});
     const [modalDeleteTask, setModalDeleteTask] = useState(false);
+    const [searcher, setSearcher] = useState(false);
 
     const navigate = useNavigate();
 
@@ -281,6 +282,35 @@ const ProjectsProvider = ({children}) => {
         }
     }
 
+    const changeStatusTask = async id => {
+        try {
+            const token = localStorage.getItem('token');
+            if(!token) return;
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            const { data } = await clientAxios.post(`/tasks/task-status/${id}`, {}, config);
+            
+            const updatedProject = {...project};
+            updatedProject.projectTasks = updatedProject.projectTasks.map(taskState => taskState._id === data._id ? data : taskState);
+
+            setProject(updatedProject);
+            setTask({});
+            setAlert({});
+
+        } catch (error) {
+            console.log(error.response);
+        }
+    }
+
+    const handleSearcher = () => {
+        setSearcher(!searcher);
+    }
+
     return (
         <ProjectsContext.Provider
             value={{
@@ -299,7 +329,10 @@ const ProjectsProvider = ({children}) => {
                 task,
                 modalDeleteTask,
                 handleDeleteTaskModal,
-                deleteTask
+                deleteTask,
+                changeStatusTask,
+                searcher,
+                handleSearcher
             }}
         >
             {children}
